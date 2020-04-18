@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>CSVExport_ImportInvocable</members>
+        <members>CSVExport_ImportHelper</members>
+        <members>CSVExport_Test</members>
+        <members>CSVExport_Constants</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
         <members>CSV_Export</members>
         <name>CustomApplication</name>
     </types>
@@ -22,6 +29,14 @@
         <members>CSV_Import_Mapping__mdt</members>
         <members>CSV_Import_Mapping_Filter__mdt</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>CSV_Export_Processes</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>CSV_Export_Processes</members>
+        <name>FlowDefinition</name>
     </types>
     <types>
         <members>CSV_Import_Mapping.Example_Opportunity</members>

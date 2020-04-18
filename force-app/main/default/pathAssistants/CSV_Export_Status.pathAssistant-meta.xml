@@ -4,5 +4,5 @@
     <entityName>CSV_Export__c</entityName>
     <fieldName>Status__c</fieldName>
     <masterLabel>CSV Export Status</masterLabel>
-    <recordTypeName>__MASTER__</recordTypeName>
+    <recordTypeName>Example</recordTypeName>
 </PathAssistant>
