@@ -34,7 +34,7 @@ jobs:
             name: Clean Up
             command: |
                 sfdx force:org:delete -u scratch -p
-                rm ~/tests/apex/*.txt ~/tests/apex/test-result-7*.json
+      #          rm ~/tests/apex/*.txt ~/tests/apex/test-result-7*.json
 orbs:
   sfdx: circleci/salesforce-sfdx@1.0.0
 version: 2.1
