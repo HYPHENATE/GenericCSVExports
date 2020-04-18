@@ -7,8 +7,8 @@
     <label>Mapping Field</label>
     <metadataRelationshipControllingField>CSV_Import_Mapping__mdt.Import_Object__c</metadataRelationshipControllingField>
     <referenceTo>FieldDefinition</referenceTo>
-    <relationshipLabel>CSV_Import_Mapping_Headers</relationshipLabel>
-    <relationshipName>CSV_Import_Mapping_Headers</relationshipName>
+    <relationshipLabel>CSV_Import_Mapping_Field</relationshipLabel>
+    <relationshipName>CSV_Import_Mapping_Field</relationshipName>
     <required>true</required>
     <type>MetadataRelationship</type>
     <unique>false</unique>
