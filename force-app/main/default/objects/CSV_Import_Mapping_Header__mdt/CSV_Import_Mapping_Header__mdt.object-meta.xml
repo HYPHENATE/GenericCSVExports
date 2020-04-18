@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This helps define what records will be imported</description>
+    <label>CSV Import Mapping Header</label>
+    <pluralLabel>CSV Import Mapping Headers</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

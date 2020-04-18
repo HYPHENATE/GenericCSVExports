@@ -168,6 +168,7 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>CSV Exports</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Import_Object__c</fullName>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Select the object that you want to import records from</inlineHelpText>
+    <label>Import Object</label>
+    <referenceTo>EntityDefinition</referenceTo>
+    <relationshipLabel>CSV_Import_Mapping_Headers</relationshipLabel>
+    <relationshipName>CSV_Import_Mapping_Headers</relationshipName>
+    <required>true</required>
+    <type>MetadataRelationship</type>
+    <unique>false</unique>
+</CustomField>

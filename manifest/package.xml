@@ -19,10 +19,24 @@
     </types>
     <types>
         <members>CSV_Export__c</members>
+        <members>CSV_Import_Mapping__mdt</members>
+        <members>CSV_Import_Mapping_Filter__mdt</members>
         <name>CustomObject</name>
     </types>
     <types>
+        <members>CSV_Import_Mapping.Example_Opportunity</members>
+        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_STAGE</members>
+        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_AMOUNT</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
+        <members>Opportunity.CSV_Export__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>CSV_Export__c-CSV Export Layout</members>
+        <members>CSV_Import_Mapping__mdt-CSV Import Mapping Layout</members>
+        <members>CSV_Import_Mapping_Filter__mdt-CSV Import Mapping Filter Layout</members>
         <name>Layout</name>
     </types>
     <types>

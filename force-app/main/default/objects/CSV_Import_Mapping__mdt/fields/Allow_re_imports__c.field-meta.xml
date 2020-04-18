@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Allow_re_imports__c</fullName>
+    <defaultValue>false</defaultValue>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Tick this box to include previous exported records that match the criteria in this import</inlineHelpText>
+    <label>Allow re-imports</label>
+    <type>Checkbox</type>
+</CustomField>

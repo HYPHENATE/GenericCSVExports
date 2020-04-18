@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mapping_Field__c</fullName>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Select the field on the import object that you want to link this csv export to</inlineHelpText>
+    <label>Mapping Field</label>
+    <metadataRelationshipControllingField>CSV_Import_Mapping__mdt.Import_Object__c</metadataRelationshipControllingField>
+    <referenceTo>FieldDefinition</referenceTo>
+    <relationshipLabel>CSV_Import_Mapping_Headers</relationshipLabel>
+    <relationshipName>CSV_Import_Mapping_Headers</relationshipName>
+    <required>true</required>
+    <type>MetadataRelationship</type>
+    <unique>false</unique>
+</CustomField>
