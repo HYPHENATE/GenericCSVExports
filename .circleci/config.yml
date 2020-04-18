@@ -10,7 +10,7 @@ jobs:
             name: Create Scratch Org
             command: |
                 sfdx force:auth:list
-                sfdx force:org:create -v SimpleTags-master -s -f "config/project-scratch-def.json" -a scratch
+                sfdx force:org:create -v GenericCSVExports-master -s -f "config/project-scratch-def.json" -a scratch
       - run: 
             name: Push Source
             command: |

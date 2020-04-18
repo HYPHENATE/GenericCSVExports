@@ -28,6 +28,9 @@ node_modules/
 # MacOS system files
 .DS_Store
 
+#pmd
+.pmdCache
+
 # Windows system files
 Thumbs.db
 ehthumbs.db
