@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
-        <name>ApexClass</name>
+        <members>CSV_Export</members>
+        <name>CustomApplication</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexComponent</name>
+        <members>CSV_Export_Access</members>
+        <name>PermissionSet</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexPage</name>
+        <members>CSV_Export_Lightning_Page</members>
+        <members>CSV_Export_UtilityBar</members>
+        <name>FlexiPage</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexTestSuite</name>
+        <members>CSV_Export_Status</members>
+        <name>PathAssistant</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexTrigger</name>
+        <members>CSV_Export__c</members>
+        <name>CustomObject</name>
     </types>
     <types>
-        <members>*</members>
-        <name>AuraDefinitionBundle</name>
+        <members>CSV_Export__c-CSV Export Layout</members>
+        <name>Layout</name>
     </types>
     <types>
-        <members>*</members>
-        <name>LightningComponentBundle</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>StaticResource</name>
+        <members>Tag__c</members>
+        <name>CustomTab</name>
     </types>
     <version>48.0</version>
 </Package>

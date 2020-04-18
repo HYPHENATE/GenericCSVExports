@@ -18,18 +18,18 @@ jobs:
       - run:
             name: Assign Permission Set
             command: |
-                sfdx force:user:permset:assign -n Tag_Manager
-      - run:
-            name: Run Apex Tests
-            command: |
-                mkdir ~/tests
-                mkdir ~/tests/apex
-                sfdx force:apex:test:run -u scratch -c -r human -d ~/tests/apex -w 9999
-      - run: 
-            name: Push to Codecov.io
-            command: |
-                cp ~/tests/apex/test-result-codecoverage.json .
-                bash <(curl -s https://codecov.io/bash)
+                sfdx force:user:permset:assign -n CSV_Export_Access
+      #- run:
+      #      name: Run Apex Tests
+      #      command: |
+      #          mkdir ~/tests
+      #          mkdir ~/tests/apex
+      #          sfdx force:apex:test:run -u scratch -c -r human -d ~/tests/apex -w 9999
+      #- run: 
+      #      name: Push to Codecov.io
+      #      command: |
+      #          cp ~/tests/apex/test-result-codecoverage.json .
+      #          bash <(curl -s https://codecov.io/bash)
       - run: 
             name: Clean Up
             command: |

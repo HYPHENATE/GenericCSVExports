@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>CSV_Export</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <description>Basic permission set that provides access to the CSV Export APP and Object model</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CSV_Export__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>CSV Export Access</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CSV_Export__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <tabSettings>
+        <tab>CSV_Export__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>
