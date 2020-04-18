@@ -35,10 +35,6 @@
         <name>Flow</name>
     </types>
     <types>
-        <members>CSV_Export_Processes</members>
-        <name>FlowDefinition</name>
-    </types>
-    <types>
         <members>CSV_Import_Mapping.Example_Opportunity</members>
         <members>CSV_Import_Mapping_Filter.OPPORTUNITY_STAGE</members>
         <members>CSV_Import_Mapping_Filter.OPPORTUNITY_AMOUNT</members>
