@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>OPPORTUNITY AMOUNT LESS THAN</label>
+    <protected>false</protected>
+    <values>
+        <field>CSV_Import_Mapping__c</field>
+        <value xsi:type="xsd:string">Example_Opportunity</value>
+    </values>
+    <values>
+        <field>Field_API_Name__c</field>
+        <value xsi:type="xsd:string">Amount</value>
+    </values>
+    <values>
+        <field>Filter_type__c</field>
+        <value xsi:type="xsd:string">less than</value>
+    </values>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">20000</value>
+    </values>
+</CustomMetadata>

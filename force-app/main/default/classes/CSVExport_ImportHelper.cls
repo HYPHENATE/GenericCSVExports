@@ -24,39 +24,49 @@ public with sharing class CSVExport_ImportHelper {
 
         // list of filters
         List<CSV_Import_Mapping_Filter__mdt> listOfFilters = importMappingRecord.CSV_Import_Mapping_Filters__r;
-        
-        // start generating our soql query
-        string query = 'SELECT ID, ';
 
+        // get the object type based on the object selected to pull in
         SObjectType objectType = Schema.getGlobalDescribe().get(importMappingRecord.Import_Object__c);
 
         // list for storing the where queries in to reduce the need for another loop later on
         List<String> whereQueryList = new List<String>();
+
+        // set for storing the field API Names in for pulling back
+        Set<String> setOfFieldAPINames = new Set<String>();
 
         // simple loop count to ensure we put our and or in the right place
         integer loopcount = 1;
 
         // loop through the mappings
         for(CSV_Import_Mapping_Filter__mdt cimf:listOfFilters){
-
-            // add field api name to the query
-            query = query + ' ' + cimf.Field_API_Name__c + ',';
+            
+            // add field API Name to a set to ensure we only query it once
+            setOfFieldAPINames.add(cimf.Field_API_Name__c);
 
             // get the filter type for the check
             string filterType = filterTypeHandling(cimf.Filter_type__c);
 
             // get the display type for the field we are processing
             DisplayType fieldType = getSObjectFieldType(objectType, cimf.Field_API_Name__c);
+            system.debug('fieldType > ' + fieldType);
             
             // generate our where clause for this filter
             string whereQueryFilter = cimf.Field_API_Name__c + ' ' + filterType;
 
             // list of field types that should not have quotes put around them
-            List<String> listOfFieldTypes = new List<String>{'Double', 'Boolean', 'Date', 'Integer','CURRENCY', 'DateTime', 'Percent'};
+            Map<String,String> mapOfFieldTypes = new Map<String, String>{'DOUBLE'=>'DOUBLE', 'BOOLEAN'=>'BOOLEAN', 'DATE'=>'DATE', 'INTEGER'=>'INTEGER','CURRENCY'=>'CURRENCY', 'DATETIME'=>'DATETIME', 'PERCENT'=>'PERCENT'};
 
             // check to see if fieldtype is in the list of field types
-            if(listOfFieldTypes.contains(string.valueOf(fieldType))){
-                whereQueryFilter = whereQueryFilter + cimf.Value__c;
+            if(mapOfFieldTypes.containsKey(string.valueOf(fieldType))){
+                string processingType = mapOfFieldTypes.get(string.valueOf(fieldType));
+                if(processingType == 'DATE'){
+                    List<String> dateSplit = cimf.Value__c.split('-');
+                    Date valueDate = date.newinstance(Integer.valueOf(dateSplit[2]),Integer.valueOf(dateSplit[1]),Integer.valueOf(dateSplit[0]));
+                    string fullvalueDate = string.valueof(valueDate);
+                    whereQueryFilter = whereQueryFilter + fullvalueDate;
+                } else {
+                    whereQueryFilter = whereQueryFilter + cimf.Value__c;
+                }
             } else {
                 whereQueryFilter = whereQueryFilter + ' \'' + cimf.Value__c + '\'';
             } 
@@ -73,6 +83,14 @@ public with sharing class CSVExport_ImportHelper {
             whereQueryList.add(whereQueryFilter);
         }
 
+        // start generating our soql query
+        string query = 'SELECT ID, ';
+
+        // loop through field API names
+        for(String fieldAPI:setOfFieldAPINames){
+            query = query + ' ' + fieldAPI + ',';
+        }
+
         // extend our query to include the export mapping field and the object we are going to query against
         query = query + ' ' + importMappingRecord.Mapping_Field__r.QualifiedApiName + ' FROM ' + importMappingRecord.Import_Object__c + ' WHERE ';
         
@@ -87,16 +105,25 @@ public with sharing class CSVExport_ImportHelper {
         // add where query to overall query
         query = query + whereQuery;
 
+        if(!importMappingRecord.Allow_re_imports__c){
+            query = query + ' AND ' + importMappingRecord.Mapping_Field__r.QualifiedApiName + '=null';
+        }
+
+        system.debug('query > ' + query);
+        // list of records to process pull back from the query
         List<SObject> recordsProcessList = Database.query(query);
 
+        // list of records to link to the export run
         List<SObject> updateList = new List<SObject>();
 
+        // loop through the list of records and add to update list
         for(SObject record:recordsProcessList){
             string mappingfield = importMappingRecord.Mapping_Field__r.QualifiedApiName;
             record.put(mappingfield, recordId);
             updateList.add(record);
         }
 
+        // perform update
         Database.update(updateList);
     }
 
@@ -117,10 +144,8 @@ public with sharing class CSVExport_ImportHelper {
             return '>=';
         } else if(filterType==CSVExport_Constants.FIELD_OPERATOR_LESS_THAN){
             return '<';
-        } else if(filterType==CSVExport_Constants.FIELD_OPERATOR_LESS_THAN_EQUALS){
-            return '<=';
         } else {
-            return null;
+            return '<=';
         }
     }
 

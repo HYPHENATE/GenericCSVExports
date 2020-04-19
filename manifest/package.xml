@@ -5,6 +5,9 @@
         <members>CSVExport_ImportHelper</members>
         <members>CSVExport_Test</members>
         <members>CSVExport_Constants</members>
+        <members>CSVExport_ExportInvocable</members>
+        <members>CSVExport_ExportHelper</members>
+        <members>CSVExport_DataFactory</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -14,6 +17,14 @@
     <types>
         <members>CSV_Export_Access</members>
         <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>CSV_Export__c-CSV Export Layout</members>
+        <members>CSV_Import_Mapping__mdt-CSV Import Mapping Layout</members>
+        <members>CSV_Import_Mapping_Filter__mdt-CSV Import Mapping Filter Layout</members>
+        <members>CSV_Export_File__mdt-CSV Export File Layout</members>
+        <members>CSV_Export_File_Line__mdt-CSV Export File Line Layout</members>
+        <name>Layout</name>
     </types>
     <types>
         <members>CSV_Export_Lightning_Page</members>
@@ -28,6 +39,8 @@
         <members>CSV_Export__c</members>
         <members>CSV_Import_Mapping__mdt</members>
         <members>CSV_Import_Mapping_Filter__mdt</members>
+        <members>CSV_Export_File__mdt</members>
+        <members>CSV_Export_File_Line__mdt</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -37,7 +50,25 @@
     <types>
         <members>CSV_Import_Mapping.Example_Opportunity</members>
         <members>CSV_Import_Mapping_Filter.OPPORTUNITY_STAGE</members>
-        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_AMOUNT</members>
+        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_AMOUNT_GREATER_THAN</members>
+        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_CLOSE_GREATER_THAN_OR_EQUAL</members>
+        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_PROBABILITY_LESSTHANOREQUAL</members>
+        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_AMOUNT_LESS_THAN</members>
+        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_NAME_NOT_EQUAL</members>
+        <members>CSV_Import_Mapping_Filter.OPPORTUNITY_ISPRIVATE_NOT_EQUALS</members>
+        <members>CSV_Export_File.EXAMPLE_OPPORTUNITY_EXPORT</members>
+        <members>CSV_Export_File_LINE.OPP_CLOSEDATE_LINE_1</members>
+        <members>CSV_Export_File_LINE.OPP_CLOSEDATE_LINE_2</members>
+        <members>CSV_Export_File_LINE.OPP_STAGE_LINE_1</members>
+        <members>CSV_Export_File_LINE.OPP_STAGE_LINE_2</members>
+        <members>CSV_Export_File_LINE.OPP_AMOUNT_LINE_1</members>
+        <members>CSV_Export_File_LINE.OPP_AMOUNT_LINE_2</members>
+        <members>CSV_Export_File_LINE.OPP_NAME_LINE_1</members>
+        <members>CSV_Export_File_LINE.OPP_NAME_LINE_2</members>
+        <members>CSV_Export_File_LINE.OPP_ID_LINE_1</members>
+        <members>CSV_Export_File_LINE.OPP_ID_LINE_2</members>
+        <members>CSV_Export_File_LINE.OPP_ACCOUNT_LINE_1</members>
+        <members>CSV_Export_File_LINE.OPP_ACCOUNT_LINE_2</members>
         <name>CustomMetadata</name>
     </types>
     <types>

@@ -4,6 +4,26 @@
         <application>CSV_Export</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <classAccesses>
+        <apexClass>CSVExport_Constants</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSVExport_ImportHelper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSVExport_ImportInvocable</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>CSV_Export_File_Line__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>CSV_Export_File__mdt</name>
+    </customMetadataTypeAccesses>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>
         <name>CSV_Import_Mapping_Filter__mdt</name>
@@ -16,11 +36,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>CSV_Export__c.Export_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>CSV_Export__c.Next_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

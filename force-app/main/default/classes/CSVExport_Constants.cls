@@ -24,7 +24,7 @@ public with sharing class CSVExport_Constants {
     /**
      * @description     static string confirming NOT EQUAL TO FILTER LOGIC for use with SOQL Queries
     */
-    public static final String FIELD_OPERATOR_NOT_EQUALS = 'not equal to';
+    public static final String FIELD_OPERATOR_NOT_EQUALS = 'not equals';
 
     /**
      * @description     static string confirming GREATER THAN TO FILTER LOGIC for use with SOQL Queries
@@ -45,5 +45,22 @@ public with sharing class CSVExport_Constants {
      * @description     static string confirming LESS THAN OR EQUALS TO FILTER LOGIC for use with SOQL Queries
     */
     public static final String FIELD_OPERATOR_LESS_THAN_EQUALS = 'less than or equals';
+
+    /**
+     * @description     invocable parameter record to make processing more efficient
+     */
+    public with sharing class ExportRecord {
+        /**
+         * @description this is the recordId for the csv export record
+         */
+        @InvocableVariable(label='Record ID' required=true)
+        public Id recordId;
+
+        /**
+         * @description this is the recordtype developer name export
+         */
+        @InvocableVariable(label='DeveloperName' required=true)
+        public string developerName;
+    }
 
 }

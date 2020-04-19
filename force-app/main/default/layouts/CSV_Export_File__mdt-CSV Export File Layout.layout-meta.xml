@@ -16,15 +16,27 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>CSV_Import_RecordType__c</field>
+                <field>FileName__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Import_Object__c</field>
+                <field>CSV_Export_RecordType_Name__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Use_Versioning__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Mapping_Field__c</field>
+                <field>Export_Object__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Export_Related_Field__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CSV_Header__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -65,6 +77,12 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <relatedLists>
+        <fields>MasterLabel</fields>
+        <fields>DeveloperName</fields>
+        <fields>NamespacePrefix</fields>
+        <relatedList>CSV_Export_File_Line__mdt.CSV_Export_File__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>

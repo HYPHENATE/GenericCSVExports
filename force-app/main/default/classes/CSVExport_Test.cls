@@ -11,25 +11,164 @@ public with sharing class CSVExport_Test {
      * @description testing a basic opportunity mapping
     */
     static testMethod void testbasicoppmapping(){
-        Account acc = new Account(Name='TestAccount1');
-        insert acc;
-
-        Opportunity opp = new Opportunity(Name='DEMO', StageName='Prospecting',CloseDate=system.today(), Amount=10000.00,AccountId=acc.Id);
-        insert opp;
-
-        CSV_Export__c csvexport = new CSV_Export__c();
-        insert csvexport;
-
-        List<CSVExport_ImportInvocable.ExportRecord> listofexports = new List<CSVExport_ImportInvocable.ExportRecord>();
-        CSVExport_ImportInvocable.ExportRecord ceii = new CSVExport_ImportInvocable.ExportRecord();
-        ceii.recordId = csvexport.Id;
-        ceii.developerName = 'Example';
-        listofexports.add(ceii);
-
-        CSVExport_ImportInvocable.importRecordsForExport(listofexports);
         
-        //Should return first and second messages
+        // create test data
+        CSVExport_DataFactory.inmemory = false;
+        Account account = CSVExport_DataFactory.createAccount('TestAccount1');
+        Opportunity opportunity = CSVExport_DataFactory.createOpportunity(account.Id, 'Prospecting', system.today(), 10000.00, 'DEMO',null);
+        CSV_Export__c csvExport = new CSV_Export__c();
+        insert csvExport;
+        List<CSVExport_Constants.ExportRecord> listOfExports = new List<CSVExport_Constants.ExportRecord>();
+        CSVExport_Constants.ExportRecord ceii = new CSVExport_Constants.ExportRecord();
+        ceii.recordId = csvExport.Id;
+        ceii.developerName = 'Example';
+        listOfExports.add(ceii);
+
+        // perform test
+        test.startTest();
+            CSVExport_ImportInvocable.importRecordsForExport(listOfExports);
+        test.stopTest();
+        
+        // verify process worked
         System.assertEquals(1, [SELECT COUNT() FROM Opportunity WHERE CSV_Export__c=:csvexport.Id], 'Expected number of opportunities linked');
+
+    }
+
+    /**
+     * @description testing a basic opportunity mapping bulk processing 500
+    */
+    static testMethod void testbasicoppmappingbulk500(){
+
+        // create test data
+        CSVExport_DataFactory.inmemory = false;
+        Account account = CSVExport_DataFactory.createAccount('TestAccount1');
+        List<Opportunity> listOfOpportunity = CSVExport_DataFactory.createOpportunityList(500,account.Id, 'Prospecting', system.today(), 10000.00, 'DEMO',null);
+        CSV_Export__c csvExport = new CSV_Export__c();
+        insert csvExport;
+        List<CSVExport_Constants.ExportRecord> listOfExports = new List<CSVExport_Constants.ExportRecord>();
+        CSVExport_Constants.ExportRecord ceii = new CSVExport_Constants.ExportRecord();
+        ceii.recordId = csvExport.Id;
+        ceii.developerName = 'Example';
+        listOfExports.add(ceii);
+
+        // perform test
+        test.startTest();
+            CSVExport_ImportInvocable.importRecordsForExport(listOfExports);
+        test.stopTest();
+        
+        // confirm process completed
+        System.assertEquals(500, [SELECT COUNT() FROM Opportunity WHERE CSV_Export__c=:csvexport.Id], 'Expected number of opportunities linked');
+
+    }
+
+    /**
+     * @description testing a basic opportunity mapping bulk processing 4000
+    */
+    static testMethod void testbasicoppmappingbulk4000(){
+
+        // set up test data
+        CSVExport_DataFactory.inmemory = false;
+        Account account = CSVExport_DataFactory.createAccount('TestAccount1');
+        List<Opportunity> listOfOpportunity = CSVExport_DataFactory.createOpportunityList(4000,account.Id, 'Prospecting', system.today(), 10000.00, 'DEMO',null);
+        CSV_Export__c csvExport = new CSV_Export__c();
+        insert csvExport;
+        List<CSVExport_Constants.ExportRecord> listOfExports = new List<CSVExport_Constants.ExportRecord>();
+        CSVExport_Constants.ExportRecord ceii = new CSVExport_Constants.ExportRecord();
+        ceii.recordId = csvExport.Id;
+        ceii.developerName = 'Example';
+        listOfExports.add(ceii);
+
+        // perform test
+        test.startTest();
+            CSVExport_ImportInvocable.importRecordsForExport(listOfExports);
+        test.stopTest();
+        
+        // verify test worked
+        System.assertEquals(4000, [SELECT COUNT() FROM Opportunity WHERE CSV_Export__c=:csvexport.Id], 'Expected number of opportunities linked');
+
+    }
+
+    /**
+     * @description testing a basic opportunity mapping
+    */
+    static testMethod void testbasicoppexport(){
+        
+        // create test data
+        CSVExport_DataFactory.inmemory = false;
+        Account account = CSVExport_DataFactory.createAccount('TestAccount1');
+        CSV_Export__c csvExport = new CSV_Export__c();
+        insert csvExport;
+        Opportunity opportunity = CSVExport_DataFactory.createOpportunity(account.Id, 'Prospecting', system.today(), 10000.00, 'DEMO',csvExport.Id);
+        List<CSVExport_Constants.ExportRecord> listOfExports = new List<CSVExport_Constants.ExportRecord>();
+        CSVExport_Constants.ExportRecord ceii = new CSVExport_Constants.ExportRecord();
+        ceii.recordId = csvExport.Id;
+        ceii.developerName = 'Example';
+        listOfExports.add(ceii);
+
+        // perform test
+        test.startTest();
+            // first run
+            CSVExport_ExportInvocable.generateExportFiles(listOfExports);
+            // second run
+            CSVExport_ExportInvocable.generateExportFiles(listOfExports);
+        test.stopTest();
+        
+        // verify process worked
+        System.assertEquals(1, [SELECT COUNT() FROM Opportunity WHERE CSV_Export__c=:csvexport.Id], 'Expected number of opportunities linked');
+
+    }
+
+    /**
+     * @description testing a basic opportunity export bulk processing 500
+    */
+    static testMethod void testbasicoppexportbulk500(){
+
+        // create test data
+        CSVExport_DataFactory.inmemory = false;
+        Account account = CSVExport_DataFactory.createAccount('TestAccount1');
+        CSV_Export__c csvExport = new CSV_Export__c();
+        insert csvExport;
+        List<Opportunity> listOfOpportunity = CSVExport_DataFactory.createOpportunityList(500,account.Id, 'Prospecting', system.today(), 10000.00, 'DEMO',csvExport.Id);
+        List<CSVExport_Constants.ExportRecord> listOfExports = new List<CSVExport_Constants.ExportRecord>();
+        CSVExport_Constants.ExportRecord ceii = new CSVExport_Constants.ExportRecord();
+        ceii.recordId = csvExport.Id;
+        ceii.developerName = 'Example';
+        listOfExports.add(ceii);
+
+        // perform test
+        test.startTest();
+            CSVExport_ExportInvocable.generateExportFiles(listOfExports);
+        test.stopTest();
+        
+        // confirm process completed
+        System.assertEquals(500, [SELECT COUNT() FROM Opportunity WHERE CSV_Export__c=:csvexport.Id], 'Expected number of opportunities linked');
+
+    }
+
+    /**
+     * @description testing a basic opportunity export bulk processing 4000
+    */
+    static testMethod void testbasicoppexportbulk4000(){
+
+        // set up test data
+        CSVExport_DataFactory.inmemory = false;
+        Account account = CSVExport_DataFactory.createAccount('TestAccount1');
+        CSV_Export__c csvExport = new CSV_Export__c();
+        insert csvExport;
+        List<Opportunity> listOfOpportunity = CSVExport_DataFactory.createOpportunityList(4000,account.Id, 'Prospecting', system.today(), 10000.00, 'DEMO',csvExport.Id);
+        List<CSVExport_Constants.ExportRecord> listOfExports = new List<CSVExport_Constants.ExportRecord>();
+        CSVExport_Constants.ExportRecord ceii = new CSVExport_Constants.ExportRecord();
+        ceii.recordId = csvExport.Id;
+        ceii.developerName = 'Example';
+        listOfExports.add(ceii);
+
+        // perform test
+        test.startTest();
+            CSVExport_ExportInvocable.generateExportFiles(listOfExports);
+        test.stopTest();
+        
+        // verify test worked
+        System.assertEquals(4000, [SELECT COUNT() FROM Opportunity WHERE CSV_Export__c=:csvexport.Id], 'Expected number of opportunities linked');
 
     }
 }

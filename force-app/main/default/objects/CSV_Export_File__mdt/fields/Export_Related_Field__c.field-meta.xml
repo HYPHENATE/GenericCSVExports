@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Export_Related_Field__c</fullName>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Use this to specify what field is related on the child object to this CSV Export record</inlineHelpText>
+    <label>Export Related Field</label>
+    <metadataRelationshipControllingField>CSV_Export_File__mdt.Export_Object__c</metadataRelationshipControllingField>
+    <referenceTo>FieldDefinition</referenceTo>
+    <relationshipLabel>CSV_Export_Files</relationshipLabel>
+    <relationshipName>CSV_Export_Files</relationshipName>
+    <required>true</required>
+    <type>MetadataRelationship</type>
+    <unique>false</unique>
+</CustomField>
