@@ -12,7 +12,7 @@ public with sharing class CSVExport_ImportHelper {
      * @return          List<CSV_Import_Mapping__mdt> mapping for query
      */
     public static List<CSV_Import_Mapping__mdt> getMappings(string developerName){
-        return [SELECT Allow_re_imports__c, CSV_Import_RecordType__c, Filter_Type__c, Import_Object__c, Mapping_Field__r.QualifiedApiName, (SELECT Field_API_Name__c, Filter_type__c, Value__c FROM CSV_Import_Mapping_Filters__r) FROM CSV_Import_Mapping__mdt WHERE CSV_Import_RecordType__c=:developerName];
+        return [SELECT Allow_re_imports__c, CSV_Import_RecordType__c, Filter_Type__c, Import_Object__c, Import_Object__r.QualifiedAPIName, Mapping_Field__r.QualifiedApiName, (SELECT Field_API_Name__c, Filter_type__c, Value__c FROM CSV_Import_Mapping_Filters__r) FROM CSV_Import_Mapping__mdt WHERE CSV_Import_RecordType__c=:developerName];
     }
 
     /**
@@ -26,7 +26,10 @@ public with sharing class CSVExport_ImportHelper {
         List<CSV_Import_Mapping_Filter__mdt> listOfFilters = importMappingRecord.CSV_Import_Mapping_Filters__r;
 
         // get the object type based on the object selected to pull in
-        SObjectType objectType = Schema.getGlobalDescribe().get(importMappingRecord.Import_Object__c);
+        SObjectType objectType = Schema.getGlobalDescribe().get(importMappingRecord.Import_Object__r.QualifiedAPIName);
+        system.debug('objectType > ' + importMappingRecord.Import_Object__c);
+        system.debug('QualifiedAPIName > ' + importMappingRecord.Import_Object__r.QualifiedAPIName);
+        system.debug('importMappingRecord > ' + importMappingRecord);
 
         // list for storing the where queries in to reduce the need for another loop later on
         List<String> whereQueryList = new List<String>();
@@ -39,6 +42,7 @@ public with sharing class CSVExport_ImportHelper {
 
         // loop through the mappings
         for(CSV_Import_Mapping_Filter__mdt cimf:listOfFilters){
+            system.debug('cimf > ' + cimf);
             
             // add field API Name to a set to ensure we only query it once
             setOfFieldAPINames.add(cimf.Field_API_Name__c);
@@ -92,7 +96,7 @@ public with sharing class CSVExport_ImportHelper {
         }
 
         // extend our query to include the export mapping field and the object we are going to query against
-        query = query + ' ' + importMappingRecord.Mapping_Field__r.QualifiedApiName + ' FROM ' + importMappingRecord.Import_Object__c + ' WHERE ';
+        query = query + ' ' + importMappingRecord.Mapping_Field__r.QualifiedApiName + ' FROM ' + importMappingRecord.Import_Object__r.QualifiedAPIName + ' WHERE ';
         
         // set string for the where query
         string whereQuery = '';
