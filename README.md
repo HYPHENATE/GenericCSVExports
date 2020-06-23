@@ -8,7 +8,7 @@ COMING SOON
 
 ## Part 1: Installation
 
-<a href="https://githubsfdeploy.herokuapp.com?owner=HYPHENATE&repo=GenericCSVExport">
+<a href="https://githubsfdeploy.herokuapp.com?owner=HYPHENATE&repo=GenericCSVExports">
   <img alt="Deploy to Salesforce"
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
