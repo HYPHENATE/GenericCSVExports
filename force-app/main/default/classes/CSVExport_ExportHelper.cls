@@ -7,12 +7,21 @@
 public with sharing class CSVExport_ExportHelper {
     
     /**
-     * @description     method to return the CSV Export Mapping and their child filters
+     * @description     method to return the CSV Export Mapping
      * @param           string developerName - this is the recordType of the CSV Export
      * @return          List<CSV_Import_Mapping__mdt> mapping for query
      */
     public static List<CSV_Export_File__mdt> getMappings(string developerName){
-        return [SELECT CSV_Header__c, Export_Object__c, Export_Object__r.QualifiedApiName, Use_Versioning__c, FileName__c, Export_Related_Field__r.QualifiedApiName, (SELECT Line__c, Output_Field_API_Name__c, Order__c FROM CSV_Export_File_Lines__r ORDER BY Order__c ASC) FROM CSV_Export_File__mdt WHERE CSV_Export_RecordType_Name__c=:developerName];
+        return [SELECT ID, CSV_Header__c, Export_Object__c, Export_Object__r.QualifiedApiName, Use_Versioning__c, FileName__c, Export_Related_Field__r.QualifiedApiName, (SELECT Line__c, Output_Field_API_Name__c, Order__c FROM CSV_Export_File_Lines__r ORDER BY Order__c ASC) FROM CSV_Export_File__mdt WHERE CSV_Export_RecordType_Name__c=:developerName];
+    }
+
+    /**
+     * @description     method to return the CSV Export Mapping Lines Items - temp because inner queries on MetaData fail or order correctly
+     * @param           string metaDataID - this is the recordType of the CSV Export
+     * @return          List<CSV_Export_File_Line__mdt> mapping for query
+     */
+    public static List<CSV_Export_File_Line__mdt> getMappingsLines(string metaDataID){
+        return [SELECT Line__c, Output_Field_API_Name__c, Order__c, CSV_Export_File__c FROM CSV_Export_File_Line__mdt WHERE CSV_Export_File__c=:metaDataID ORDER BY Order__c ASC];
     }
 
     /**
@@ -39,7 +48,7 @@ public with sharing class CSVExport_ExportHelper {
     */
     public static void generateFile(string recordId, CSV_Export_File__mdt exportMappingRecord){
         ID contentDocumentID = getExistingContentDocumentID(recordId, exportMappingRecord.FileName__c);
-        List<CSV_Export_File_Line__mdt> listOfLineMappings = exportMappingRecord.CSV_Export_File_Lines__r;
+        List<CSV_Export_File_Line__mdt> listOfLineMappings = getMappingsLines(exportMappingRecord.Id);
         string fieldSetQuery = getSOQLFieldQuery(listOfLineMappings);
         Map<String, Set<String>> lineFieldMappings = getLineFieldMapping(listOfLineMappings);
         List<SObject> listOfRecords = getRecordsToProcess(exportMappingRecord, fieldSetQuery, recordId);
