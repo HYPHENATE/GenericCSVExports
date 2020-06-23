@@ -15,6 +15,11 @@ public with sharing class CSVExport_ExportHelper {
         return [SELECT CSV_Header__c, Export_Object__c, Use_Versioning__c, FileName__c, Export_Related_Field__r.QualifiedApiName, (SELECT Line__c, Output_Field_API_Name__c, Order__c FROM CSV_Export_File_Lines__r ORDER BY Order__c ASC) FROM CSV_Export_File__mdt WHERE CSV_Export_RecordType_Name__c=:developerName];
     }
 
+    /**
+     * @description     simple future method that is being used to ensure we get increased CPU Limits for bulk processing of the export files
+     * @param           string recordId
+     * @param           string developerName
+     */
     @future
     public static void processinfuture(string recordId, string developerName){
         // get the mapping based on he export recordtype

@@ -18,13 +18,7 @@ public with sharing class CSVExport_ExportInvocable {
         for(CSVExport_Constants.ExportRecord exportrecord:exportrecords){
 
             CSVExport_ExportHelper.processinfuture(exportrecord.recordId, exportrecord.developerName);
-            // get the mapping based on he export recordtype
-            //List<CSV_Export_File__mdt> mappings = CSVExport_ExportHelper.getMappings(exportrecord.developerName);
-            // loop through the mappings and process them
-            //for(CSV_Export_File__mdt cef:mappings){
-                // pass export recordid and export mapping to mathod to process
-            //    CSVExport_ExportHelper.generateFile(exportrecord.recordId, cef);
-            //}
+
         }
     }
 }
