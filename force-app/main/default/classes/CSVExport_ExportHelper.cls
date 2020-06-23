@@ -12,7 +12,7 @@ public with sharing class CSVExport_ExportHelper {
      * @return          List<CSV_Import_Mapping__mdt> mapping for query
      */
     public static List<CSV_Export_File__mdt> getMappings(string developerName){
-        return [SELECT CSV_Header__c, Export_Object__c, Use_Versioning__c, FileName__c, Export_Related_Field__r.QualifiedApiName, (SELECT Line__c, Output_Field_API_Name__c, Order__c FROM CSV_Export_File_Lines__r ORDER BY Order__c ASC) FROM CSV_Export_File__mdt WHERE CSV_Export_RecordType_Name__c=:developerName];
+        return [SELECT CSV_Header__c, Export_Object__c, Export_Object__r.QualifiedApiName, Use_Versioning__c, FileName__c, Export_Related_Field__r.QualifiedApiName, (SELECT Line__c, Output_Field_API_Name__c, Order__c FROM CSV_Export_File_Lines__r ORDER BY Order__c ASC) FROM CSV_Export_File__mdt WHERE CSV_Export_RecordType_Name__c=:developerName];
     }
 
     /**
@@ -111,7 +111,7 @@ public with sharing class CSVExport_ExportHelper {
     */
     public static List<SObject> getRecordsToProcess(CSV_Export_File__mdt exportMappingRecord, string fieldSetQuery, string recordId){
         // start building our query
-        string query = 'SELECT ' + fieldSetQuery + ',' + exportMappingRecord.Export_Related_Field__r.QualifiedApiName + ' FROM ' + exportMappingRecord.Export_Object__c + ' WHERE ' + exportMappingRecord.Export_Related_Field__r.QualifiedApiName + '=\'' + recordId + '\'';
+        string query = 'SELECT ' + fieldSetQuery + ',' + exportMappingRecord.Export_Related_Field__r.QualifiedApiName + ' FROM ' + exportMappingRecord.Export_Object__r.QualifiedApiName + ' WHERE ' + exportMappingRecord.Export_Related_Field__r.QualifiedApiName + '=\'' + recordId + '\'';
         List<SObject> returnrecords = Database.query(query);
         return returnrecords;
     }
@@ -248,6 +248,7 @@ public with sharing class CSVExport_ExportHelper {
 
                 // get what the field type is so we can convert it correctly
                 DisplayType fieldType = getSObjectFieldType(record.getSObjectType(), field);
+                system.debug('fieldType > ' + fieldType);
 
                 // get the value of field
                 Object getValue = getSObjectField(record, field);
@@ -256,7 +257,7 @@ public with sharing class CSVExport_ExportHelper {
                 string fieldValue;
 
                 // handle different types of fields
-                if(string.valueof(fieldType)=='Decimal' || string.valueof(fieldType)=='Currency' || string.valueof(fieldType)=='Percent'){
+                if(string.valueof(fieldType)=='Decimal' || string.valueof(fieldType)=='Currency' || string.valueof(fieldType)=='Percent' || string.valueof(fieldType)=='Double'){
                     Decimal decimalvalue = (decimal)getvalue;
                     fieldValue = string.valueof(decimalvalue);
                 } else if(string.valueof(fieldType)=='Date'){
