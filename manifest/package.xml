@@ -69,6 +69,8 @@
         <members>CSV_Export_File_LINE.OPP_ID_LINE_2</members>
         <members>CSV_Export_File_LINE.OPP_ACCOUNT_LINE_1</members>
         <members>CSV_Export_File_LINE.OPP_ACCOUNT_LINE_2</members>
+        <members>CSV_Export_File_Line.OPP_PROBABILITY_LINE_1</members>
+        <members>CSV_Export_File_Line.OPP_PROBABILITY_LINE_2</members>
         <name>CustomMetadata</name>
     </types>
     <types>
