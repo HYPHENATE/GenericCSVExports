@@ -50,11 +50,13 @@ public with sharing class CSVExport_ExportHelper {
         ID contentDocumentID = getExistingContentDocumentID(recordId, exportMappingRecord.FileName__c);
         List<CSV_Export_File_Line__mdt> listOfLineMappings = getMappingsLines(exportMappingRecord.Id);
         string fieldSetQuery = getSOQLFieldQuery(listOfLineMappings);
-        Map<String, Set<String>> lineFieldMappings = getLineFieldMapping(listOfLineMappings);
+        Map<String, List<String>> lineFieldMappings = getLineFieldMapping(listOfLineMappings);
         List<SObject> listOfRecords = getRecordsToProcess(exportMappingRecord, fieldSetQuery, recordId);
         system.debug('***preloop getCpuTime()***'+Limits.getCpuTime());
         string csv = exportMappingRecord.CSV_Header__c + '\n';
         for(SObject record:listOfRecords){
+            system.debug('record > ' + record);
+            system.debug('lineFieldMappings > ' + lineFieldMappings);
             string recordlines = getLineValues(record, lineFieldMappings);
             csv = csv + recordlines;
         }
@@ -130,23 +132,23 @@ public with sharing class CSVExport_ExportHelper {
      * @param           List<CSV_Export_File_Line__mdt> listOfFilterLines file line mappings
      * @return          Map<String, Set<String>>
     */
-    public static Map<String, Set<String>> getLineFieldMapping(List<CSV_Export_File_Line__mdt> listOfFilterLines){
+    public static Map<String, List<String>> getLineFieldMapping(List<CSV_Export_File_Line__mdt> listOfFilterLines){
 
         // set for storing our field api names in
-        Map<String, Set<String>> returnMap = new Map<String, Set<String>>();
+        Map<String, List<String>> returnMap = new Map<String, List<String>>();
 
         // loop through CSV Export File Lines and add to set
         for(CSV_Export_File_Line__mdt cefl:listOfFilterLines){
             // generate a line number
             string lineNumber = 'Line ' + cefl.Line__c;
             // create a set for adding our line fields to - using a set because the same field might get queries multiple times in an output
-            Set<String> lineFields;
+            List<String> lineFields;
 
             // check if the map contains the number number and if it does pull in the existing fields
             if(returnMap.containsKey(lineNumber)){
                 lineFields = returnMap.get(lineNumber);
             } else {
-                lineFields = new Set<String>();
+                lineFields = new List<String>();
             }
             lineFields.add(cefl.Output_Field_API_Name__c);
             returnMap.put(lineNumber,lineFields);
@@ -239,7 +241,7 @@ public with sharing class CSVExport_ExportHelper {
      * @param       Map<String, Set<String>> lineFieldMappings
      * @return      string line
     */
-    public static string getLineValues(sObject record, Map<String, Set<String>> lineFieldMappings){
+    public static string getLineValues(sObject record, Map<String, List<String>> lineFieldMappings){
         
         // set up our record lines for the record being processed
         string recordlines = '';
@@ -247,7 +249,7 @@ public with sharing class CSVExport_ExportHelper {
         for(String line:lineFieldMappings.keySet()){
 
             // get the individual fields within the mapping
-            Set<String> fields = lineFieldMappings.get(line);
+            List<String> fields = lineFieldMappings.get(line);
 
             // list for storing the returned values in
             List<String> values = new List<String>();
