@@ -140,7 +140,7 @@ public with sharing class CSVExport_ExportHelper {
         // loop through CSV Export File Lines and add to set
         for(CSV_Export_File_Line__mdt cefl:listOfFilterLines){
             // generate a line number
-            string lineNumber = 'Line ' + cefl.Line__c;
+            string lineNumber = 'Line ' + Integer.valueOf(cefl.Line__c);
             // create a set for adding our line fields to - using a set because the same field might get queries multiple times in an output
             List<String> lineFields;
 
