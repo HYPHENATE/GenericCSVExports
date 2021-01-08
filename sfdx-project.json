@@ -1,11 +1,19 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "GenericCSVExports",
+            "versionName": "Winter 21",
+            "versionNumber": "1.0.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "GenericCSVExports": "0Ho67000000TN4YCAW",
+        "GenericCSVExports@0.1.0-1": "04t67000000SaFAAA0",
+        "GenericCSVExports@1.0.0-1": "04t67000000SaFFAA0"
     }
-  ],
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "48.0"
 }

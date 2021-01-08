@@ -11,6 +11,12 @@ Could be used for:
 Developed by Hyphen8 as a part of our 8% pledge and freely available.
 
 ## Verion Control
+
+### Release
+- Update to API version 50
+- include unlocked package links
+
+### Beta
 - Initial BETA release
 
 ## Part 1: Installation
@@ -19,6 +25,10 @@ Developed by Hyphen8 as a part of our 8% pledge and freely available.
   <img alt="Deploy to Salesforce"
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
+
+Unlocked Package installation links:
+- Production: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t67000000SaFFAA0
+- Sandbox: https://test.salesforce.com/packaging/installPackage.apexp?p0=04t67000000SaFFAA0
 
 ## Part 2: Configuration
 

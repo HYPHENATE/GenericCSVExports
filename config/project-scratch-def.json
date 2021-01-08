@@ -1,6 +1,13 @@
 {
   "orgName": "Generic CSV Exports company",
-  "edition": "Enterprise",
+  "edition": "Developer",
   "features": [],
-  "settings": {}
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": false
+    }
+  }
 }
