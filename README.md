@@ -27,8 +27,8 @@ Developed by Hyphen8 as a part of our 8% pledge and freely available.
 </a>
 
 Unlocked Package installation links:
-- Production: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t67000000SaFFAA0
-- Sandbox: https://test.salesforce.com/packaging/installPackage.apexp?p0=04t67000000SaFFAA0
+- Production: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t67000000SaVcAAK
+- Sandbox: https://test.salesforce.com/packaging/installPackage.apexp?p0=04t67000000SaVcAAK
 
 ## Part 2: Configuration
 
