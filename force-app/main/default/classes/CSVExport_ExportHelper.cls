@@ -5,7 +5,7 @@
  * @group           Helper
 */
 public with sharing class CSVExport_ExportHelper {
-    
+
     /**
      * @description     method to return the CSV Export Mapping
      * @param           string developerName - this is the recordType of the CSV Export
@@ -29,7 +29,7 @@ public with sharing class CSVExport_ExportHelper {
      * @param           string recordId
      * @param           string developerName
      */
-    @future
+  //  @future
     public static void processinfuture(string recordId, string developerName){
         // get the mapping based on he export recordtype
         List<CSV_Export_File__mdt> mappings = getMappings(developerName);
@@ -47,22 +47,14 @@ public with sharing class CSVExport_ExportHelper {
      * @param           CSV_Export_File__mdt exportMappingRecord this is one of the export mapping records
     */
     public static void generateFile(string recordId, CSV_Export_File__mdt exportMappingRecord){
-        ID contentDocumentID = getExistingContentDocumentID(recordId, exportMappingRecord.FileName__c);
-        List<CSV_Export_File_Line__mdt> listOfLineMappings = getMappingsLines(exportMappingRecord.Id);
-        string fieldSetQuery = getSOQLFieldQuery(listOfLineMappings);
-        Map<String, List<String>> lineFieldMappings = getLineFieldMapping(listOfLineMappings);
-        List<SObject> listOfRecords = getRecordsToProcess(exportMappingRecord, fieldSetQuery, recordId);
-        system.debug('***preloop getCpuTime()***'+Limits.getCpuTime());
-        string csv = exportMappingRecord.CSV_Header__c + '\n';
-        for(SObject record:listOfRecords){
-            system.debug('record > ' + record);
-            system.debug('lineFieldMappings > ' + lineFieldMappings);
-            string recordlines = getLineValues(record, lineFieldMappings);
-            csv = csv + recordlines;
-        }
-        system.debug('***complete loop getCpuTime()***'+Limits.getCpuTime());
-        generateContentFile(csv, recordId, contentDocumentID, exportMappingRecord.Use_Versioning__c, exportMappingRecord.FileName__c);
-        system.debug('***end of game getCpuTime()***'+Limits.getCpuTime());
+
+        CSVExport_ExportBatchable csvBatchable = new CSVExport_ExportBatchable(recordId,
+                                                                               exportMappingRecord);
+
+        Integer batchSize = Integer.valueOf(label.ExportCSVBatchSize);
+
+        ID jobID = Database.executeBatch(csvBatchable, batchSize);
+
     }
 
     /**
@@ -120,11 +112,13 @@ public with sharing class CSVExport_ExportHelper {
      * @param           string recordId
      * @return          List<Sobject> listofrecords
     */
-    public static List<SObject> getRecordsToProcess(CSV_Export_File__mdt exportMappingRecord, string fieldSetQuery, string recordId){
+   // public static List<SObject> getRecordsToProcess(CSV_Export_File__mdt exportMappingRecord, string fieldSetQuery, string recordId){
+      public static String getRecordsToProcess(CSV_Export_File__mdt exportMappingRecord, string fieldSetQuery, string recordId){
         // start building our query
         string query = 'SELECT ' + fieldSetQuery + ',' + exportMappingRecord.Export_Related_Field__r.QualifiedApiName + ' FROM ' + exportMappingRecord.Export_Object__r.QualifiedApiName + ' WHERE ' + exportMappingRecord.Export_Related_Field__r.QualifiedApiName + '=\'' + recordId + '\'';
-        List<SObject> returnrecords = Database.query(query);
-        return returnrecords;
+     //   List<SObject> returnrecords = Database.query(query);
+     //   return returnrecords;
+        return query;
     }
 
     /**
@@ -164,13 +158,13 @@ public with sharing class CSVExport_ExportHelper {
     * @param        SObjectType objectType - confirms what objecttype we are working with
     * @return       DisplayType - confirmed what or how we are going to display the field
     */
-    public static DisplayType getSObjectFieldType(SObjectType objectType, string sOQLField) {        
-        
+    public static DisplayType getSObjectFieldType(SObjectType objectType, string sOQLField) {
+
         DisplayType fieldType = null;
         List<String> sOQLFields = sOQLField.Split('\\.');
         if(sOQLFields.size() == 1) {
             if(objectType.getDescribe().fields.getMap().containsKey(sOQLField)) {
-                fieldType = objectType.getDescribe().fields.getMap().get(sOQLField).getDescribe().getType();    
+                fieldType = objectType.getDescribe().fields.getMap().get(sOQLField).getDescribe().getType();
             }
         } else {
             fieldtype = getSObjectFieldTypeRelationship(objectType, sOQLFields);
@@ -179,30 +173,30 @@ public with sharing class CSVExport_ExportHelper {
     }
 
     /**
-    * @description  Will take in a field name which can be a referenced field e.g Object.RecordType.DeveloperName 
+    * @description  Will take in a field name which can be a referenced field e.g Object.RecordType.DeveloperName
     *               and parse the object dynamically and return the value of that field from the record supplied
     * @param        Sobject record this is the record that we are reviewing
     * @param        string sOQLField this is the field on the record that we need to review
     * @return       Object this is the object with the value in it
     */
     public static Object getSObjectField(sObject record, string sOQLField) {
-        
+
         Object result = null;
         if (sOQLField != null) {
             List<String> sOQLFields = sOQLField.Split('\\.');
-            
+
             if(sOQLFields.size() == 1) {
                 try {
                     result = record.get(sOQLFields[0]);
                 } catch (Exception ex) {
                     result = null;
-                }                
+                }
             } else {
                 string sOQLRelationship = sOQLFields.remove(0);
-                result = getSObjectField(record.getSobject(sOQLRelationship), String.join(sOQLFields, '.'));        
+                result = getSObjectField(record.getSobject(sOQLRelationship), String.join(sOQLFields, '.'));
             }
-        }        
-        return result;        
+        }
+        return result;
     }
 
     /**
@@ -217,7 +211,7 @@ public with sharing class CSVExport_ExportHelper {
 
         //Need to identify which object this refernce relates to so remove from SOQLFields into SOQLRelationship
         string sOQLRelationship = sOQLFields.remove(0);
-        
+
         //For each field find out the relationship name and if this matches then get the SObjectType of this and iterate
         Map<String, Schema.SObjectField> fsMap =  objectType.getDescribe().fields.getMap();
         for(Schema.SObjectField fld : fsMap.values()) {
@@ -242,7 +236,7 @@ public with sharing class CSVExport_ExportHelper {
      * @return      string line
     */
     public static string getLineValues(sObject record, Map<String, List<String>> lineFieldMappings){
-        
+
         // set up our record lines for the record being processed
         string recordlines = '';
         // loop through the lines provided in the mappings
@@ -259,7 +253,6 @@ public with sharing class CSVExport_ExportHelper {
 
                 // get what the field type is so we can convert it correctly
                 DisplayType fieldType = getSObjectFieldType(record.getSObjectType(), field);
-                system.debug('fieldType > ' + fieldType);
 
                 // get the value of field
                 Object getValue = getSObjectField(record, field);
@@ -268,14 +261,15 @@ public with sharing class CSVExport_ExportHelper {
                 string fieldValue;
 
                 // handle different types of fields
-                if(string.valueof(fieldType)=='Decimal' || string.valueof(fieldType)=='Currency' || string.valueof(fieldType)=='Percent' || string.valueof(fieldType)=='Double'){
+                if(string.valueof(fieldType)==label.CSV_ExportDecimal || string.valueof(fieldType)==label.CSV_ExportCurrency || string.valueof(fieldType)==label.CSV_ExportPercent || string.valueof(fieldType)==label.CSV_ExportDouble){
                     Decimal decimalvalue = (decimal)getvalue;
                     fieldValue = string.valueof(decimalvalue);
-                } else if(string.valueof(fieldType)=='Date'){
+                } else if(string.valueof(fieldType)==label.CSV_ExportDate){
                     Date datevalue = (date)getValue;
                     fieldValue = datevalue.format();
                 } else {
                     fieldValue = (string)getValue;
+                    fieldValue = fieldValue != null ? fieldValue.replaceAll('(\\r|\\n|\\,)+', '') : null;
                 }
                 values.add(fieldValue);
             }

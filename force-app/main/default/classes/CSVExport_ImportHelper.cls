@@ -43,7 +43,7 @@ public with sharing class CSVExport_ImportHelper {
         // loop through the mappings
         for(CSV_Import_Mapping_Filter__mdt cimf:listOfFilters){
             system.debug('cimf > ' + cimf);
-            
+
             // add field API Name to a set to ensure we only query it once
             setOfFieldAPINames.add(cimf.Field_API_Name__c);
 
@@ -53,7 +53,7 @@ public with sharing class CSVExport_ImportHelper {
             // get the display type for the field we are processing
             DisplayType fieldType = getSObjectFieldType(objectType, cimf.Field_API_Name__c);
             system.debug('fieldType > ' + fieldType);
-            
+
             // generate our where clause for this filter
             string whereQueryFilter = cimf.Field_API_Name__c + ' ' + filterType;
 
@@ -73,7 +73,7 @@ public with sharing class CSVExport_ImportHelper {
                 }
             } else {
                 whereQueryFilter = whereQueryFilter + ' \'' + cimf.Value__c + '\'';
-            } 
+            }
 
             // confirm if this is the last record or not and ensure we don't add the soqlFilterType incorrectly
             if(loopcount < listOfFilters.size()){
@@ -97,7 +97,7 @@ public with sharing class CSVExport_ImportHelper {
 
         // extend our query to include the export mapping field and the object we are going to query against
         query = query + ' ' + importMappingRecord.Mapping_Field__r.QualifiedApiName + ' FROM ' + importMappingRecord.Import_Object__r.QualifiedAPIName + ' WHERE ';
-        
+
         // set string for the where query
         string whereQuery = '';
 
@@ -115,20 +115,17 @@ public with sharing class CSVExport_ImportHelper {
 
         system.debug('query > ' + query);
         // list of records to process pull back from the query
-        List<SObject> recordsProcessList = Database.query(query);
 
-        // list of records to link to the export run
-        List<SObject> updateList = new List<SObject>();
+        //  Make asynchronous callout to perform the actual updates
 
-        // loop through the list of records and add to update list
-        for(SObject record:recordsProcessList){
-            string mappingfield = importMappingRecord.Mapping_Field__r.QualifiedApiName;
-            record.put(mappingfield, recordId);
-            updateList.add(record);
-        }
+        CSVExport_ImportBatchable csvBatchable = new CSVExport_ImportBatchable(recordId,
+                                                                               importMappingRecord,
+                                                                               query);
 
-        // perform update
-        Database.update(updateList);
+        Integer batchSize = Integer.valueOf(label.ExportCSVBatchSize);
+
+        ID jobID = Database.executeBatch(csvBatchable, batchSize);
+
     }
 
 
@@ -159,14 +156,14 @@ public with sharing class CSVExport_ImportHelper {
     * @param        SObjectType objectType - confirms what objecttype we are working with
     * @return       DisplayType - confirmed what or how we are going to display the field
     */
-    public static DisplayType getSObjectFieldType(SObjectType objectType, string sOQLField) {        
-        
+    public static DisplayType getSObjectFieldType(SObjectType objectType, string sOQLField) {
+
         // set the display type
         DisplayType fieldType = null;
-        
+
         // check to see if the field exists and if it does return the type
         if(objectType.getDescribe().fields.getMap().containsKey(sOQLField)) {
-            fieldType = objectType.getDescribe().fields.getMap().get(sOQLField).getDescribe().getType();    
+            fieldType = objectType.getDescribe().fields.getMap().get(sOQLField).getDescribe().getType();
         }
 
         // return our fieldtype
